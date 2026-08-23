@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { LoginResponse, Patient, ClinicalCase, CaseListItem, HistoryAnswer, RedFlag, Document, AiSummary, Question, FullCase } from '../types';
+import { LoginResponse, Patient, PatientCreate, ClinicalCase, CaseCreate, CaseListItem, HistoryAnswer, RedFlag, Document, AiSummary, Question, FullCase } from '../types';
 
 export const ACCESS_TOKEN_STORAGE_KEY = 'medikiosk_access_token';
 
@@ -52,14 +52,15 @@ export const authApi = {
 };
 
 export const patientApi = {
-  createPatient: async (data: Partial<Patient>): Promise<Patient> => {
+  createPatient: async (data: PatientCreate): Promise<Patient> => {
     if (isMock) return { ...data, id: 'p' + Date.now() } as Patient;
-    const res = await api.post('/patients', data);
+    const res = await api.post<Patient>('/patients', data);
     return res.data;
   },
   createCase: async (patientId: string, chiefComplaint: string): Promise<ClinicalCase> => {
     if (isMock) return { id: 'c' + Date.now(), patient_id: patientId, chief_complaint: chiefComplaint, case_status: 'in_progress', priority: 'normal', created_at: new Date().toISOString() };
-    const res = await api.post(`/patients/${patientId}/cases`, { chief_complaint: chiefComplaint });
+    const payload: CaseCreate = { patient_id: patientId, chief_complaint: chiefComplaint };
+    const res = await api.post<ClinicalCase>('/cases', payload);
     return res.data;
   },
   submitHistory: async (caseId: string, answers: HistoryAnswer[]): Promise<void> => {

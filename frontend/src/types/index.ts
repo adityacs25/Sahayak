@@ -18,9 +18,22 @@ export interface Patient {
   gender: string;
   phone_number: string;
   address?: string;
-  dob?: string;
+  date_of_birth?: string;
   emergency_contact_name?: string;
   emergency_contact_phone?: string;
+  language_preference?: string;
+}
+
+export interface PatientCreate {
+  full_name: string;
+  age: number;
+  gender: string;
+  phone_number: string;
+  date_of_birth?: string;
+  address?: string;
+  emergency_contact_name?: string;
+  emergency_contact_phone?: string;
+  language_preference?: string;
 }
 
 export interface ClinicalCase {
@@ -30,6 +43,11 @@ export interface ClinicalCase {
   case_status: CaseStatus;
   priority: Priority;
   created_at: string;
+}
+
+export interface CaseCreate {
+  patient_id: string;
+  chief_complaint: string;
 }
 
 export interface CaseListItem extends ClinicalCase {

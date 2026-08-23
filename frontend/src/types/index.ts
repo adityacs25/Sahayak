@@ -5,6 +5,12 @@ export interface User {
   full_name: string;
 }
 
+export interface LoginResponse {
+  access_token: string;
+  token_type: string;
+  user: User;
+}
+
 export interface Patient {
   id: string;
   full_name: string;

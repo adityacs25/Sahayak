@@ -1,9 +1,8 @@
-# 🏥 MediKiosk
+# 🏥 Sahayak
 ## AI-Assisted Patient Clinical History Platform
 
 **Smart India Hackathon 2026 | Problem Statement SIH26047**  
 **Ministry of Ayush | All India Institute of Ayurveda**
-
 ---
 
 ## 🎯 Problem Statement

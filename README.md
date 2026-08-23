@@ -1,7 +1,7 @@
-# 🏥 MediKiosk
+# 🏥 Sahayak
 ## AI-Assisted Patient Clinical History Platform
 
-**Smart India Hackathon 2026 | Problem Statement SIH26047**  
+**Smart India Hackathon 2026 | Problem Statement SIH26047**
 **Ministry of Ayush | All India Institute of Ayurveda**
 
 ---
@@ -10,7 +10,7 @@
 
 High-patient-load OPDs at AIIA and similar institutions face significant challenges:
 - Doctors spend 30–40% of consultation time on history-taking
-- Paper records are difficult to structure and search  
+- Paper records are difficult to structure and search
 - Patient-reported history is often incomplete or poorly documented
 - Limited time for each patient in high-load settings
 
@@ -40,7 +40,7 @@ MediKiosk is an **AI-assisted, assistive** clinical information and documentatio
 - 📅 Medical timeline visualization
 - 📋 AI-assisted summary review before submission
 
-### Doctor Side  
+### Doctor Side
 - 👨‍⚕️ Dedicated doctor portal with secure login
 - 📋 Patient queue with priority indicators
 - 🗂️ Full case view with 6 organized tabs
@@ -141,7 +141,7 @@ cp .env.example .env
 python seed_data.py      # Creates demo patients
 uvicorn app.main:app --reload
 ```
-Backend runs at: http://localhost:8000  
+Backend runs at: http://localhost:8000
 API docs: http://localhost:8000/docs
 
 **Frontend:**
@@ -199,7 +199,7 @@ Copy `backend/.env.example` to `backend/.env`:
 
 ## 📡 API Documentation
 
-Once the backend is running, access Swagger UI at:  
+Once the backend is running, access Swagger UI at:
 **http://localhost:8000/docs**
 
 Key endpoints:
@@ -266,8 +266,8 @@ MediKiosk is a **clinical documentation tool** developed for demonstration purpo
 
 ## 👥 Team
 
-Built for **Smart India Hackathon 2026**  
-Problem Statement: **SIH26047**  
+Built for **Smart India Hackathon 2026**
+Problem Statement: **SIH26047**
 Organization: Ministry of Ayush / All India Institute of Ayurveda
 
 ---

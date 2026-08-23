@@ -1,11 +1,33 @@
 import axios from 'axios';
-import { User, Patient, ClinicalCase, CaseListItem, HistoryAnswer, RedFlag, Document, AiSummary, Question, FullCase } from '../types';
+import { LoginResponse, Patient, PatientCreate, ClinicalCase, CaseCreate, CaseListItem, HistoryAnswer, RedFlag, Document, AiSummary, Question, FullCase } from '../types';
+
+export const ACCESS_TOKEN_STORAGE_KEY = 'medikiosk_access_token';
+
+export const getAccessToken = (): string | null => sessionStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
+
+export const setAccessToken = (token: string): void => {
+  sessionStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
+};
+
+export const clearAccessToken = (): void => {
+  sessionStorage.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+};
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || 'http://127.0.0.1:8000/api',
 });
 
-const isMock = true; // Force mock mode for prototype
+const isMock = import.meta.env.VITE_API_MODE === 'mock';
+
+api.interceptors.request.use((config) => {
+  const token = getAccessToken();
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
 
 // Mock Data
 const MOCK_PATIENTS: Patient[] = [
@@ -19,22 +41,26 @@ const MOCK_CASES: CaseListItem[] = [
 ];
 
 export const authApi = {
-  login: async (email: string, password: string):Promise<{token: string, user: User}> => {
-    if (isMock) return { token: 'mock-token', user: { id: 'u1', email, role: 'doctor', full_name: 'Dr. Smith' } };
-    const res = await api.post('/login', { email, password });
-    return res.data;
+  login: async (email: string, password: string): Promise<LoginResponse> => {
+    const response: LoginResponse = isMock
+      ? { access_token: 'mock-token', token_type: 'bearer', user: { id: 'u1', email, role: 'doctor', full_name: 'Dr. Smith' } }
+      : (await api.post<LoginResponse>('/auth/login', { email, password })).data;
+
+    setAccessToken(response.access_token);
+    return response;
   }
 };
 
 export const patientApi = {
-  createPatient: async (data: Partial<Patient>): Promise<Patient> => {
+  createPatient: async (data: PatientCreate): Promise<Patient> => {
     if (isMock) return { ...data, id: 'p' + Date.now() } as Patient;
-    const res = await api.post('/patients', data);
+    const res = await api.post<Patient>('/patients', data);
     return res.data;
   },
   createCase: async (patientId: string, chiefComplaint: string): Promise<ClinicalCase> => {
     if (isMock) return { id: 'c' + Date.now(), patient_id: patientId, chief_complaint: chiefComplaint, case_status: 'in_progress', priority: 'normal', created_at: new Date().toISOString() };
-    const res = await api.post(`/patients/${patientId}/cases`, { chief_complaint: chiefComplaint });
+    const payload: CaseCreate = { patient_id: patientId, chief_complaint: chiefComplaint };
+    const res = await api.post<ClinicalCase>('/cases', payload);
     return res.data;
   },
   submitHistory: async (caseId: string, answers: HistoryAnswer[]): Promise<void> => {

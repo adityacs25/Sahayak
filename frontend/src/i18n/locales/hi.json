@@ -1,0 +1,8 @@
+{
+  "welcome": {
+    "title": "[HI] Your health history, prepared before you meet the doctor.",
+    "subtitle": "[HI] Ministry of Ayush | All India Institute of Ayurveda",
+    "start": "[HI] Start New Visit",
+    "existing": "[HI] Existing Patient"
+  }
+}
